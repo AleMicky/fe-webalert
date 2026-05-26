@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ConfirmDeleteDialog } from '@/shared/components/confirm-delete-dialog';
 import { StatusBadge } from '@/shared/components/status-badge';
 
-import { SeverityLevel } from '../severity-level.type';
+import { SeverityLevel } from '../severity-level.types';
 
 interface CreateColumnsProps {
     onEdit: (item: SeverityLevel) => void;

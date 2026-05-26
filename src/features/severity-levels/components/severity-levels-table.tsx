@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DataTable } from '@/shared/components/data-table';
 
-import { SeverityLevel } from '../severity-level.type';
+import { SeverityLevel } from '../severity-level.types';
 import { createSeverityLevelColumns } from './severity-levels-columns';
 
 interface Props {
