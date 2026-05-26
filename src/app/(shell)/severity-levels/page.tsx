@@ -10,7 +10,7 @@ import { SeverityLevelFormDialog } from '@/features/severity-levels/components/s
 import { useSeverityLevelsQuery } from '@/features/severity-levels/hooks/use-severity-levels-query';
 import { useSeverityLevelsMutations } from '@/features/severity-levels/hooks/use-severity-levels-mutations';
 
-import { SeverityLevel } from '@/features/severity-levels/severity-level.types';
+import { SeverityLevel } from '@/features/severity-levels/severity-level.type';
 import { CreateSeverityLevelDto } from '@/features/severity-levels/severity-level.schema';
 import { LoadingTable, PageHeader } from '@/shared/components';
 

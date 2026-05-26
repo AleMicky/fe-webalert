@@ -14,7 +14,7 @@ import {
   TextFormField,
 } from '@/shared/components/form';
 
-import { SeverityLevel } from '../severity-level.types';
+import { SeverityLevel } from '../severity-level.type';
 import {
   CreateSeverityLevelDto,
   createSeverityLevelSchema,
