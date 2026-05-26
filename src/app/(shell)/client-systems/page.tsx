@@ -1,12 +1,96 @@
+'use client';
+
+import { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+
+import { ClientSystemFormDialog } from '@/features/client-systems/components/client-system-form-dialog';
+import { ClientSystemsTable } from '@/features/client-systems/components/client-system-table';
+import { useClientSystemsMutations } from '@/features/client-systems/hooks/use-client-system-mutations';
+import { useClientSystemsQuery } from '@/features/client-systems/hooks/use-client-system-query';
+import { CreateClientSystemDto } from '@/features/client-systems/client-system.schema';
+import { ClientSystem } from '@/features/client-systems/client-system.types';
+import { LoadingTable, PageHeader } from '@/shared/components';
+
 export default function ClientSystemsPage() {
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<ClientSystem | null>(null);
+
+  const { data: clientSystems, isLoading } = useClientSystemsQuery();
+
+  const {
+    create,
+    update,
+    remove,
+    isCreating,
+    isUpdating,
+  } = useClientSystemsMutations();
+
+  const isSubmitting = isCreating || isUpdating;
+
+  const handleCreate = () => {
+    setSelected(null);
+    setOpen(true);
+  };
+
+  const handleSubmit = (values: CreateClientSystemDto) => {
+    if (selected) {
+      update(
+        {
+          id: selected.id,
+          data: values,
+        },
+        {
+          onSuccess: () => {
+            setOpen(false);
+            setSelected(null);
+          },
+        },
+      );
+
+      return;
+    }
+
+    create(values, {
+      onSuccess: () => {
+        setOpen(false);
+        setSelected(null);
+      },
+    });
+  };
+
   return (
-    <main className="space-y-4">
-      <div>
-        <h1 className="text-2xl font-bold">Sistemas cliente</h1>
-        <p className="text-muted-foreground">
-          Sistemas conectados que emiten eventos.
-        </p>
-      </div>
+    <main className="p-6 space-y-4">
+      <PageHeader
+        title="Sistemas cliente"
+        description="Sistemas conectados que emiten eventos."
+        action={
+          <Button onClick={handleCreate}>
+            Nuevo
+          </Button>
+        }
+      />
+
+      {isLoading ? (
+        <LoadingTable />
+      ) : (
+        <ClientSystemsTable
+          data={clientSystems}
+          onEdit={(item) => {
+            setSelected(item);
+            setOpen(true);
+          }}
+          onDelete={(id) => remove(id)}
+        />
+      )}
+
+      <ClientSystemFormDialog
+        open={open}
+        onOpenChange={setOpen}
+        initialData={selected}
+        isSubmitting={isSubmitting}
+        onSubmit={handleSubmit}
+      />
     </main>
-  )
+  );
 }
