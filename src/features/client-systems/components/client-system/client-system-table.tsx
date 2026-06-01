@@ -3,19 +3,26 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DataTable } from '@/shared/components/data-table';
 
-import { ClientSystem } from '../client-system.types';
+import { ClientSystem } from '../../types/client-system.types';
 import { createClientSystemColumns } from './client-system-columns';
 
 interface Props {
   data: ClientSystem[];
   onEdit: (item: ClientSystem) => void;
   onDelete: (id: string) => void;
+  onManage: (item: ClientSystem) => void;
 }
 
-export function ClientSystemsTable({ data, onEdit, onDelete }: Props) {
+export function ClientSystemsTable({
+  data,
+  onEdit,
+  onDelete,
+  onManage,
+}: Props) {
   const columns = createClientSystemColumns({
     onEdit,
     onDelete,
+    onManage,
   });
 
   return (

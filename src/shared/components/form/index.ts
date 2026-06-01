@@ -6,3 +6,4 @@ export * from './switch-form-field';
 export * from './select-form-field';
 export * from './form-submit-buttons';
 export * from './tanstack-form';
+export * from './generic-select-fetch';

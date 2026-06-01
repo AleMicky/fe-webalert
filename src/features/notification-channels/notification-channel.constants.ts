@@ -17,4 +17,8 @@ export const notificationChannelTypeOptions = [
         label: 'Teams',
         value: NotificationChannelType.TEAMS,
     },
+    {
+        label: 'Google Calendar',
+        value: NotificationChannelType.GOOGLE_CALENDAR,
+    },
 ];

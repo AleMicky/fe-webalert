@@ -9,90 +9,80 @@ import {
   FormSubmitButtons,
   SwitchFormField,
   TanStackForm,
-  TextareaFormField,
   TextFormField,
+  TextareaFormField,
 } from '@/shared/components/form';
 
 import {
-  CreateClientSystemDto,
-  createClientSystemSchema,
-  defaultCreateClientSystem,
-} from '../client-system.schema';
-import { ClientSystem } from '../client-system.types';
+  CreateClientSystemTokenDto,
+  createClientSystemTokenSchema,
+  defaultCreateClientSystemToken,
+} from '@/features/client-systems/schemas/client-system-token.schema';
+import { ClientSystemToken } from '@/features/client-systems/types/client-system-token.types';
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  initialData?: ClientSystem | null;
-  onSubmit: (values: CreateClientSystemDto) => void;
-  isSubmitting?: boolean;
+  initialData: ClientSystemToken | null;
+  clientSystemId: string;
+  isSubmitting: boolean;
+  onSubmit: (values: CreateClientSystemTokenDto) => void;
 }
 
-export function ClientSystemFormDialog({
+export function ClientSystemTokenFormDialog({
   open,
   onOpenChange,
   initialData,
-  onSubmit,
+  clientSystemId,
   isSubmitting,
+  onSubmit,
 }: Props) {
   const form = useForm({
-    defaultValues: defaultCreateClientSystem,
+    defaultValues: defaultCreateClientSystemToken,
     validators: {
-      onSubmit: createClientSystemSchema,
+      onSubmit: createClientSystemTokenSchema,
     },
-
-    onSubmit: async ({ value }) => {
-      onSubmit(value);
-    },
+    onSubmit: async ({ value }) =>
+      onSubmit({
+        ...value,
+        expiresAt: value.expiresAt || undefined,
+      }),
   });
 
   useEffect(() => {
     form.reset({
-      code: initialData?.code ?? '',
-      name: initialData?.name ?? '',
+      clientSystemId,
       description: initialData?.description ?? '',
+      expiresAt: initialData?.expiresAt ?? '',
       active: initialData?.active ?? true,
     });
-  }, [initialData, open]);
+  }, [clientSystemId, form, initialData, open]);
 
   return (
     <FormDialogLayout
       open={open}
       onOpenChange={onOpenChange}
-      title={initialData ? 'Editar sistema cliente' : 'Nuevo sistema cliente'}
+      title={initialData ? 'Editar token' : 'Nuevo token'}
     >
       <TanStackForm form={form}>
         <FieldGroup>
-          <form.Field name="code">
-            {(field) => (
-              <TextFormField
-                field={field}
-                label="Código"
-                placeholder="ERP_CORE"
-                autoComplete="off"
-                disabled={isSubmitting}
-              />
-            )}
-          </form.Field>
-
-          <form.Field name="name">
-            {(field) => (
-              <TextFormField
-                field={field}
-                label="Nombre"
-                placeholder="ERP Core"
-                autoComplete="off"
-                disabled={isSubmitting}
-              />
-            )}
-          </form.Field>
-
           <form.Field name="description">
             {(field) => (
               <TextareaFormField
                 field={field}
                 label="Descripción"
-                placeholder="Descripción opcional"
+                placeholder="Uso del token"
+                disabled={isSubmitting}
+              />
+            )}
+          </form.Field>
+
+          <form.Field name="expiresAt">
+            {(field) => (
+              <TextFormField
+                field={field}
+                label="Expira en"
+                type="datetime-local"
                 disabled={isSubmitting}
               />
             )}

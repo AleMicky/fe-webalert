@@ -1,22 +1,24 @@
 'use client';
 
-import { ArrowUpDown, Edit } from 'lucide-react';
+import { ArrowUpDown, Edit, Settings } from 'lucide-react';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { Button } from '@/components/ui/button';
 import { ConfirmDeleteDialog } from '@/shared/components/confirm-delete-dialog';
 import { StatusBadge } from '@/shared/components/status-badge';
 
-import { ClientSystem } from '../client-system.types';
+import { ClientSystem } from '../types/client-system.types';
 
 interface CreateColumnsProps {
   onEdit: (item: ClientSystem) => void;
   onDelete: (id: string) => void;
+  onManage: (item: ClientSystem) => void;
 }
 
 export function createClientSystemColumns({
   onEdit,
   onDelete,
+  onManage,
 }: CreateColumnsProps): ColumnDef<ClientSystem>[] {
   return [
     {
@@ -74,6 +76,15 @@ export function createClientSystemColumns({
 
         return (
           <div className="flex justify-end gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => onManage(item)}
+            >
+              <Settings className="mr-1 h-4 w-4" />
+              Configurar
+            </Button>
+
             <Button
               variant="outline"
               size="sm"

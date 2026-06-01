@@ -1,18 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 
-import { ClientSystemFormDialog } from '@/features/client-systems/components/client-system-form-dialog';
-import { ClientSystemsTable } from '@/features/client-systems/components/client-system-table';
-import { useClientSystemsMutations } from '@/features/client-systems/hooks/use-client-system-mutations';
-import { useClientSystemsQuery } from '@/features/client-systems/hooks/use-client-system-query';
-import { CreateClientSystemDto } from '@/features/client-systems/client-system.schema';
-import { ClientSystem } from '@/features/client-systems/client-system.types';
+import { ClientSystemFormDialog } from '@/features/client-systems/components/client-system/client-system-form-dialog';
+import { ClientSystemsTable } from '@/features/client-systems/components/client-system/client-system-table';
+import { useClientSystemsMutations } from '@/features/client-systems/hooks/client-system/use-client-system-mutations';
+import { useClientSystemsQuery } from '@/features/client-systems/hooks/client-system/use-client-system-query';
+import { CreateClientSystemDto } from '@/features/client-systems/schemas/client-system.schema';
+import { ClientSystem } from '@/features/client-systems/types/client-system.types';
 import { LoadingTable, PageHeader } from '@/shared/components';
 
 export default function ClientSystemsPage() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<ClientSystem | null>(null);
 
@@ -76,6 +78,7 @@ export default function ClientSystemsPage() {
       ) : (
         <ClientSystemsTable
           data={clientSystems}
+          onManage={(item) => router.push(`/client-systems/${item.id}`)}
           onEdit={(item) => {
             setSelected(item);
             setOpen(true);
